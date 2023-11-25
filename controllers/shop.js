@@ -16,6 +16,7 @@ exports.getProducts = (req, res, next) => {
 };
 
 exports.getProduct = (req, res, next) => {
+  console.log(req.params.productId, 'hi');
   const prodId = req.params.productId;
   // Product.findAll({ where: { id: prodId } })
   //   .then(products => {
@@ -26,8 +27,9 @@ exports.getProduct = (req, res, next) => {
   //     });
   //   })
   //   .catch(err => console.log(err));
-  Product.findById(prodId)
+  Product.findByPk(prodId)
     .then(product => {
+      console.log(product.title, 'hi1');
       res.render('shop/product-detail', {
         product: product,
         pageTitle: product.title,
@@ -74,7 +76,7 @@ exports.getCart = (req, res, next) => {
 
 exports.postCart = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.findById(prodId, product => {
+  Product.findByPk(prodId, product => {
     Cart.addProduct(prodId, product.price);
   });
   res.redirect('/cart');
@@ -82,7 +84,7 @@ exports.postCart = (req, res, next) => {
 
 exports.postCartDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.findById(prodId, product => {
+  Product.findByPk(prodId, product => {
     Cart.deleteProduct(prodId, product.price);
     res.redirect('/cart');
   });
